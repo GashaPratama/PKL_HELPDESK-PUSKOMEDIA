@@ -25,7 +25,7 @@ return new class extends Migration {
             $table->string('url_situs')->nullable();
             $table->text('kendala');
             $table->string('lampiran')->nullable();
-            $table->string('status')->default('Diproses');
+            $table->enum('status', ['Di Cek','Diproses', 'Selesai', 'Ditolak'])->default('Di Cek');
 
             $table->timestamps();
         });
