@@ -74,4 +74,43 @@ class LaporanController extends Controller
         $laporan = Laporan::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
         return view('customer.laporan.show', compact('laporan'));
     }
+
+    //delete laporan
+    public function destroy($id)
+    {
+        $laporan = Laporan::findOrFail($id);
+        $laporan->delete();
+
+        return redirect()->back()->with('success', 'Laporan berhasil dihapus.');
+    }
+
+// Menampilkan form edit laporan
+public function edit($id)
+{
+    $laporan = Laporan::findOrFail($id);
+    $kategoriList = \App\Models\Kategori::all(); // ambil semua kategori
+
+    return view('customer.laporan.edit-laporan', compact('laporan', 'kategoriList'));
+}
+
+// Proses update laporan
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'kategori_id' => 'required',
+        'kendala' => 'required',
+    ]);
+
+    $laporan = Laporan::findOrFail($id);
+    $laporan->update([
+        'kategori_id' => $request->kategori_id,
+        'kendala' => $request->kendala,
+    ]);
+
+    return redirect()->back()->with('success', 'Laporan berhasil diperbarui.');
+}
+
+
+
+
 }

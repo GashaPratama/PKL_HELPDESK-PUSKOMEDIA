@@ -76,11 +76,6 @@
          <a href="{{ route('customer.laporan.create') }}" class="bg-white p-4 rounded shadow hover:bg-blue-50 block text-center">
    Add Laporan
 </a>
-
-          <button class="bg-white p-4 rounded shadow hover:bg-blue-50">Edit Laporan</button>
-          <button class="bg-white p-4 rounded shadow hover:bg-blue-50">Delete Laporan</button>
-          <button class="bg-white p-4 rounded shadow hover:bg-blue-50">History Laporan</button>
-          <button class="bg-white p-4 rounded shadow hover:bg-blue-50">Lacak Pelaporan</button>
         </div>
         <p class="text-sm mt-4 text-gray-600 leading-relaxed">
           ➤ Isian Laporan, Kategori, URL situs, Kendala, Foto/Video, Status laporan.<br>
@@ -88,43 +83,62 @@
         </p>
       </section>
 
-      <!-- Section: Laporan Saya -->
-      <section class="mt-12">
-        <h3 class="text-xl font-bold mb-4">📋 Laporan Saya</h3>
+<!-- Section: Laporan Saya -->
+<section class="mt-12">
+  <h3 class="text-xl font-bold mb-4">📋 Laporan Saya</h3>
 
-        @if($laporan->isEmpty())
-          <p class="text-gray-500">Belum ada laporan yang dikirim.</p>
-        @else
-          <div class="bg-white shadow rounded overflow-hidden">
-            <table class="min-w-full text-sm">
-              <thead class="bg-blue-100 text-left">
-                <tr>
-                  <th class="px-4 py-2">ID Ticket</th>
-                  <th class="px-4 py-2">Kategori</th>
-                  <th class="px-4 py-2">Kendala</th>
-                  <th class="px-4 py-2">Status</th>
-                  <th class="px-4 py-2">Tanggal</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach($laporan as $item)
-                  <tr class="border-b hover:bg-gray-50">
-                    <td class="px-4 py-2">{{ $item->id }}</td>
-                    <td class="px-4 py-2">{{ $item->kategori }}</td>
-                    <td class="px-4 py-2">{{ Str::limit($item->kendala, 30) }}</td>
-                    <td class="px-4 py-2">
-                      <span class="inline-block px-2 py-1 text-xs bg-blue-200 text-blue-800 rounded">
-                        {{ $item->status }}
-                      </span>
-                    </td>
-                    <td class="px-4 py-2">{{ $item->created_at->format('d M Y') }}</td>
-                  </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
-        @endif
-      </section>
+  @if($laporan->isEmpty())
+    <p class="text-gray-500">Belum ada laporan yang dikirim.</p>
+  @else
+    <div class="bg-white shadow rounded overflow-hidden">
+<table class="min-w-full text-sm">
+  <thead class="bg-blue-100 text-left">
+    <tr>
+      <th class="px-4 py-2">ID Ticket</th>
+      <th class="px-4 py-2">Kategori</th>
+      <th class="px-4 py-2">Kendala</th>
+      <th class="px-4 py-2">Status</th>
+      <th class="px-4 py-2">Tanggal</th>
+      <th class="px-4 py-2">Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach($laporan as $item)
+      <tr class="border-b hover:bg-gray-50">
+        <td class="px-4 py-2">{{ $item->id }}</td>
+        <td class="px-4 py-2">
+        {{ json_decode($item->kategori)->nama ?? '-' }}
+        </td>
+        <td class="px-4 py-2">{{ Str::limit($item->kendala, 30) }}</td>
+        <td class="px-4 py-2">
+          <span class="inline-block px-2 py-1 text-xs bg-blue-200 text-blue-800 rounded">
+            {{ $item->status }}
+          </span>
+        </td>
+        <td class="px-4 py-2">{{ $item->created_at->format('d M Y') }}</td>
+        <td class="px-4 py-2 flex gap-2">
+          <!-- Tombol Edit -->
+          <a href="{{ route('customer.laporan.edit', $item->id) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 text-xs rounded shadow">
+            ✏️ Edit
+          </a>
+
+          <!-- Tombol Delete -->
+          <form action="{{ route('customer.laporan.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus laporan ini?');">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-xs rounded shadow">
+                  🗑️ Hapus
+              </button>
+          </form>
+        </td>
+      </tr>
+    @endforeach
+  </tbody>
+</table>
+
+    </div>
+  @endif
+</section>
 
     </main>
   </div>

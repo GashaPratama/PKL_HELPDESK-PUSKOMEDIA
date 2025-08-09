@@ -44,6 +44,7 @@ Route::middleware(['auth', 'role:customer_service'])->group(function () {
         Route::get('/', [KategoriController::class, 'index'])->name('index');
         Route::post('/', [KategoriController::class, 'store'])->name('store');
         Route::delete('/{kategori}', [KategoriController::class, 'destroy'])->name('destroy');
+        
     });
 });
 
@@ -66,6 +67,14 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
         Route::get('/create', [LaporanController::class, 'create'])->name('create');
         Route::post('/store', [LaporanController::class, 'store'])->name('store');
         Route::get('/{id}', [LaporanController::class, 'show'])->name('show');
+
+    // Delete Laporan
+        Route::delete('/{id}', [LaporanController::class, 'destroy'])->name('destroy');
+
+    // Edit Laporan
+    Route::get('/{id}/edit', [LaporanController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [LaporanController::class, 'update'])->name('update');
+        
     });
 
     // Profil
@@ -87,5 +96,6 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
         // Password
         Route::get('/edit-password', [ProfileController::class, 'editPassword'])->name('edit-password');
         Route::post('/update-password', [ProfileController::class, 'updatePassword'])->name('update-password');
+
     });
 });

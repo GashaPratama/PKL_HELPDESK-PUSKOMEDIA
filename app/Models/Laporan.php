@@ -12,7 +12,7 @@ class Laporan extends Model
     protected $fillable = [
         'user_id',
         'ticket_id',
-        'kategori_id',
+        'kategori_id',  
         'url_situs',
         'kendala',
         'lampiran',
