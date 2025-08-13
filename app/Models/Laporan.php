@@ -19,6 +19,18 @@ class Laporan extends Model
         'status',
     ];
 
+    // Alias agar bisa akses $laporan->deskripsi
+    public function getDeskripsiAttribute()
+    {
+        return $this->attributes['kendala'] ?? null;
+    }
+
+    // Alias agar bisa akses $laporan->url
+    public function getUrlAttribute()
+    {
+        return $this->attributes['url_situs'] ?? null;
+    }
+
     // Relasi ke user (pelapor)
     public function user()
     {
@@ -31,4 +43,3 @@ class Laporan extends Model
         return $this->belongsTo(Kategori::class);
     }
 }
-
